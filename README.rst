@@ -31,6 +31,14 @@ class ObjectForm(ModelForm):
     class Meta:
         model = MODEL
 
+Settings
+--------
+DTRANS_CONF = {
+    'force_urls': False,                   # Force urls nicknames
+    'apps_urls': {nickname: app name},     # Dictionary with nick to app key values
+    'models_urls': {nickname: model name}, # Dictionary with nick to model key values
+}
+
 Examples
 ========
 

@@ -11,6 +11,7 @@ Authors:
 # std imports
 
 # 3rd party imports
+from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import get_app
 from django.http import HttpResponse, Http404
@@ -21,7 +22,7 @@ from django.utils import simplejson
 # internal imports
 
 
-def add_or_modify(request, app_name, model_name, obj_id=None):
+def add_or_modify(request, app_url, model_url, obj_id=None):
     """
     Add or Modify. Imports needed modules and calls the request processing
     method.
@@ -32,6 +33,9 @@ def add_or_modify(request, app_name, model_name, obj_id=None):
         obj_id: object to modify.
 
     """
+    app_name = url_to_name(app_url, 'app')
+    model_name = url_to_name(model_url, 'model')
+
     cap_model = model_name.capitalize()
     form_name = '%sForm' % cap_model
     template_name = '%s_%s.html' % (app_name, model_name)
@@ -75,12 +79,31 @@ def get_form(app_name, form_name, cls):
     try:
         exec 'from %s.forms import %s' % (app_name, form_name)
     except ImportError:
+        from django.forms import ModelForm
         meta = type('Meta', (), { "model": cls, })
-        mf_class = type('modelform', (forms.ModelForm,), {"Meta": meta})
+        mf_class = type('modelform', (ModelForm,), {"Meta": meta})
     else:
         mf_class = eval(form_name)
 
     return mf_class
+
+
+def url_to_name(url, kind):
+    """
+    Get app or model name from url. Translates from dtrans config if present.
+
+    """
+    if hasattr(settings, 'DTRANS_CONF'):
+        conf = settings.DTRANS_CONF
+        conf_key = "%ss_urls" % kind
+
+        if (conf_key in conf) and (url in conf[conf_key]):
+            name = conf[conf_key][url].split('.')[-1]
+
+    else:
+        name = url
+
+    return name
 
 
 def process_request(request, cls, form_obj, obj_id, template):
