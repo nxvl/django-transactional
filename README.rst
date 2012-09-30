@@ -29,6 +29,13 @@ foo/models.py
 class Bar(models.Model):
     name = models.CharField(max_length=10)
 
+foo/forms.py
+------------
+
+class BarForm(models.ModelForm):
+    class Meta:
+        model = Bar
+
 foo_bar.html
 ------------
 <form action=".">
