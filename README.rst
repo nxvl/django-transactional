@@ -14,8 +14,8 @@ Add django transactional to your urls.py. It will accept urls of the form: /*APP
 
 Templates
 ---------
-The templates must be named *APP*_*MODEL*.html in lower case letters and it will get **obj_form** as a parameter.
+The templates must be named *APP_MODEL*.html in lower case letters and it will get **obj_form** as a parameter.
 
 Forms
 -----
-Forms should be named *MODEL*Form where *Model* is capitalized.
+Forms should be named *MODELForm* where *Model* is capitalized.
