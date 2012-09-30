@@ -8,7 +8,7 @@ Authors:
     Nicolas Valcarcel Scerpella <nvalcarcel@corpb2c.com>
 
 """
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('dtrans',
     url(
