@@ -1,3 +1,13 @@
+# -*- coding: UTF-8 -*-
+"""
+Url definitions.
+
+Copyright (C) 2012 Corp B2C S.A.C.
+
+Authors:
+    Nicolas Valcarcel Scerpella <nvalcarcel@corpb2c.com>
+
+"""
 from django.conf.urls import patterns, include, url
 
 urlpatterns = patterns('dtrans.utils',

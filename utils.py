@@ -6,6 +6,7 @@ Copyright (C) 2012 Corp B2C S.A.C.
 
 Authors:
     Nicolas Valcarcel Scerpella <nvalcarcel@corpb2c.com>
+
 """
 # std imports
 
@@ -13,7 +14,7 @@ Authors:
 from django.conf import settings
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db import models
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
 from django.utils import simplejson
@@ -32,12 +33,16 @@ def add_or_modify(request, app_name, model_name, obj_id=None):
         obj_id: object to modify.
 
     """
-    app = models.get_app(app_name)
     cap_model = model_name.capitalize()
-    cls = getattr(app, cap_model)
     form_obj = '%sForm' % cap_model
-    exec 'from %s.forms import %s' % (app_name, form_obj)
     template_name = '%s_%s.html' % (app_name, model_name)
+
+    try:
+        app = models.get_app(app_name)
+        cls = getattr(app, cap_model)
+        exec 'from %s.forms import %s' % (app_name, form_obj)
+    except:
+        raise Http404
 
     return process_request(request, cls, eval(form_obj), obj_id, template_name)
 
