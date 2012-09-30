@@ -25,7 +25,11 @@ The templates must be named *APP_MODEL*.html in lower case letters and it will g
 
 Forms
 -----
-Forms should be named *ModelForm* where *Model* is capitalized.
+Forms should be named *ModelForm* where *Model* is capitalized. If it's not present it will create a basic ModelForm:
+
+class ObjectForm(ModelForm):
+    class Meta:
+        model = MODEL
 
 Examples
 ========

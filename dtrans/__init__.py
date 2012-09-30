@@ -36,9 +36,9 @@ def add_or_modify(request, app_name, model_name, obj_id=None):
     form_name = '%sForm' % cap_model
     template_name = '%s_%s.html' % (app_name, model_name)
 
-    app = get_models(app_name)
-    cls = get_class(app, cap_model)
-    form_obj = get_form(app_name, form_name)
+    models = get_models(app_name)
+    cls = get_class(models, cap_model)
+    form_obj = get_form(app_name, form_name, cls)
 
     return process_request(request, cls, form_obj, obj_id, template_name)
 
@@ -49,11 +49,11 @@ def get_models(app_name):
 
     """
     try:
-        app = get_app(app_name)
+        models = get_app(app_name)
     except ImproperlyConfigured:
         raise Http404
 
-    return app
+    return models
 
 
 def get_class(app, model_name):
@@ -67,7 +67,7 @@ def get_class(app, model_name):
         raise Http404
 
 
-def get_form(app_name, form_name):
+def get_form(app_name, form_name, cls):
     """
     Gets form.
 
@@ -75,9 +75,12 @@ def get_form(app_name, form_name):
     try:
         exec 'from %s.forms import %s' % (app_name, form_name)
     except ImportError:
-        raise Http404
+        meta = type('Meta', (), { "model": cls, })
+        mf_class = type('modelform', (forms.ModelForm,), {"Meta": meta})
+    else:
+        mf_class = eval(form_name)
 
-    return eval(form_name)
+    return mf_class
 
 
 def process_request(request, cls, form_obj, obj_id, template):
