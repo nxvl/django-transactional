@@ -9,7 +9,7 @@ Usage
 
 urls.py
 -------
-Add django transactional to your urls.py. It will accept urls of the form: **/*APP*/*MODEL*/add/** to add new model objects and **/*APP*/*MODEL*/add/*OBJECT_ID*/** to edit data in model object with id *OBJECT_ID*.
+Add django transactional to your urls.py. It will accept urls of the form: **/APP/MODEL/add/** to add new model objects and **/APP/MODEL/add/OBJECT_ID/** to edit data in model object with id *OBJECT_ID*.
     url(r'^', include('dtrans.urls')),
 
 Templates
