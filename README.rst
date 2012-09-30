@@ -9,6 +9,8 @@ Uses url to build transaction for you translating **/APP/MODEL/add/** into:
   * form: ModelForm form from app APP
   * template: APP_MODEL.html
 
+And will present the user with the template to file it and submit, once submited it will return a json with {'success': True} or with {'sucess': False, 'errors': ERRORS}
+
 Usage
 =====
 

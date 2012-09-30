@@ -11,7 +11,8 @@ Authors:
 # std imports
 
 # 3rd party imports
-from django.db import models
+from django.core.exceptions import ImproperlyConfigured
+from django.db.models import get_app
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, render_to_response
 from django.template import RequestContext
@@ -32,17 +33,51 @@ def add_or_modify(request, app_name, model_name, obj_id=None):
 
     """
     cap_model = model_name.capitalize()
-    form_obj = '%sForm' % cap_model
+    form_name = '%sForm' % cap_model
     template_name = '%s_%s.html' % (app_name, model_name)
 
+    app = get_models(app_name)
+    cls = get_class(app, cap_model)
+    form_obj = get_form(app_name, form_name)
+
+    return process_request(request, cls, form_obj, obj_id, template_name)
+
+
+def get_models(app_name):
+    """
+    Gets APP models module.
+
+    """
     try:
-        app = models.get_app(app_name)
-        cls = getattr(app, cap_model)
-        exec 'from %s.forms import %s' % (app_name, form_obj)
-    except:
+        app = get_app(app_name)
+    except ImproperlyConfigured:
         raise Http404
 
-    return process_request(request, cls, eval(form_obj), obj_id, template_name)
+    return app
+
+
+def get_class(app, model_name):
+    """
+    Gets model class.
+
+    """
+    if hasattr(app, model_name):
+        return getattr(app, model_name)
+    else:
+        raise Http404
+
+
+def get_form(app_name, form_name):
+    """
+    Gets form.
+
+    """
+    try:
+        exec 'from %s.forms import %s' % (app_name, form_name)
+    except ImportError:
+        raise Http404
+
+    return eval(form_name)
 
 
 def process_request(request, cls, form_obj, obj_id, template):
