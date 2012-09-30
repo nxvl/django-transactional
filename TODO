@@ -1,3 +1,4 @@
+- Better exception handling
 - Write setup.py
 - Add django configuration key to add apps path
 - Write a decent README
