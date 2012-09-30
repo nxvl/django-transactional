@@ -10,7 +10,7 @@ Authors:
 """
 from django.conf.urls import patterns, include, url
 
-urlpatterns = patterns('dtrans.utils',
+urlpatterns = patterns('dtrans',
     url(
         r'^(?P<app_name>\w+)/(?P<model_name>\w+)/add/$',
         'add_or_modify',

@@ -3,6 +3,11 @@ Django Transactional
 ====================
 
 Easy package to add simple transactional ModelForm forms in your django app.
+Uses url to build transaction for you translating **/APP/MODEL/add/** into:
+  * app: APP
+  * model: model MODEL from app APP
+  * form: ModelForm form from app APP
+  * template: APP_MODEL.html
 
 Usage
 =====
