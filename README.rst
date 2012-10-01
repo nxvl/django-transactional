@@ -17,6 +17,8 @@ Usage
 urls.py
 -------
 Add django transactional to your urls.py. It will accept urls of the form: **/APP/MODEL/add/** to add new model objects and **/APP/MODEL/add/OBJECT_ID/** to edit data in model object with id *OBJECT_ID*.
+
+::
     url(r'^', include('dtrans.urls')),
 
 Templates
@@ -27,17 +29,20 @@ Forms
 -----
 Forms should be named *ModelForm* where *Model* is capitalized. If it's not present it will create a basic ModelForm:
 
-class ObjectForm(ModelForm):
-    class Meta:
-        model = MODEL
+::
+    class ObjectForm(ModelForm):
+        class Meta:
+            model = MODEL
 
 Settings
 --------
-DTRANS_CONF = {
-    'force_urls': False,                   # Force urls nicknames
-    'apps_urls': {nickname: app name},     # Dictionary with nick to app key values
-    'models_urls': {nickname: model name}, # Dictionary with nick to model key values
-}
+::
+    DTRANS_CONF = {
+        'force_urls': False,                   # Force urls nicknames
+        'apps_urls': {nickname: app name},     # Dictionary with nick to app key values
+        'models_urls': {nickname: model name}, # Dictionary with nick to model key values
+        'template_suffix': 'suffix',           # suffix to add at the end of template names
+    }
 
 Examples
 ========
@@ -45,19 +50,22 @@ Examples
 foo/models.py
 -------------
 
-class Bar(models.Model):
-    name = models.CharField(max_length=10)
+::
+    class Bar(models.Model):
+        name = models.CharField(max_length=10)
 
 foo/forms.py
 ------------
 
-class BarForm(models.ModelForm):
-    class Meta:
-        model = Bar
+::
+    class BarForm(models.ModelForm):
+        class Meta:
+            model = Bar
 
 foo_bar.html
 ------------
-<form action=".">
-  {{ obj_form.as_p }}
-  <input type="submit" value="Submit">
-</form>
+::
+    <form action=".">
+      {{ obj_form.as_p }}
+      <input type="submit" value="Submit">
+    </form>
