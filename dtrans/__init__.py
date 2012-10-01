@@ -88,20 +88,33 @@ def get_form(app_name, form_name, cls):
     return mf_class
 
 
+def get_template(app_name. model_name):
+    template_name = '%s_%s.html' % (app_name, model_name)
+
+    if hasattr(settings, 'DTRANS_CONF'):
+        conf = settings.DTRANS_CONF
+
+        if 'template_sufix' in conf:
+            template_name = '%s_%s_%s.html' % (
+                app_name, model_name, conf['template_sufix'])
+
+    return template_name
+
+
+
 def url_to_name(url, kind):
     """
     Get app or model name from url. Translates from dtrans config if present.
 
     """
+    name = url
+
     if hasattr(settings, 'DTRANS_CONF'):
         conf = settings.DTRANS_CONF
         conf_key = "%ss_urls" % kind
 
         if (conf_key in conf) and (url in conf[conf_key]):
             name = conf[conf_key][url].split('.')[-1]
-
-    else:
-        name = url
 
     return name
 
