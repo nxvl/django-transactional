@@ -88,7 +88,7 @@ def get_form(app_name, form_name, cls):
     return mf_class
 
 
-def get_template(app_name. model_name):
+def get_template(app_name, model_name):
     template_name = '%s_%s.html' % (app_name, model_name)
 
     if hasattr(settings, 'DTRANS_CONF'):
