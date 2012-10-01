@@ -17,7 +17,7 @@ Usage
 
 urls.py
 -------
-Add django transactional to your urls.py. It will accept urls of the form: **/APP/MODEL/add/** to add new model objects and **/APP/MODEL/add/OBJECT_ID/** to edit data in model object with id *OBJECT_ID*::
+Add django transactional to your urls.py. It will accept urls of the form: **/APP/MODEL/add/** to add new model objects and **/APP/MODEL/add/OBJECT_ID/** to edit data in model object with id *OBJECT_ID*:::python
 
     url(r'^', include('dtrans.urls')),
 
@@ -29,7 +29,7 @@ Forms
 -----
 Forms should be named *ModelForm* where *Model* is capitalized. If it's not present it will create a basic ModelForm:
 
-::
+:::python
 
     class ObjectForm(ModelForm):
         class Meta:
@@ -37,7 +37,7 @@ Forms should be named *ModelForm* where *Model* is capitalized. If it's not pres
 
 Settings
 --------
-::
+:::python
 
     DTRANS_CONF = {
         'force_urls': False,                   # Force urls nicknames
@@ -46,19 +46,20 @@ Settings
         'template_suffix': 'suffix',           # suffix to add at the end of template names
     }
 
+
 Examples
 ========
 
 foo/models.py
 -------------
-::
+:::python
 
     class Bar(models.Model):
         name = models.CharField(max_length=10)
 
 foo/forms.py
 ------------
-::
+:::python
 
     class BarForm(models.ModelForm):
         class Meta:
@@ -66,9 +67,10 @@ foo/forms.py
 
 foo_bar.html
 ------------
-::
+:::python
 
     <form action=".">
       {{ obj_form.as_p }}
       <input type="submit" value="Submit">
     </form>
+
