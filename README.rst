@@ -4,10 +4,11 @@ Django Transactional
 
 Easy package to add simple transactional ModelForm forms in your django app.
 Uses url to build transaction for you translating **/APP/MODEL/add/** into:
-  * app: APP
-  * model: model MODEL from app APP
-  * form: ModelForm form from app APP
-  * template: APP_MODEL.html
+
+- app: APP
+- model: model MODEL from app APP
+- form: ModelForm form from app APP
+- template: APP_MODEL.html
 
 And will present the user with the template to file it and submit, once submited it will return a json with {'success': True} or with {'sucess': False, 'errors': ERRORS}
 
@@ -16,9 +17,8 @@ Usage
 
 urls.py
 -------
-Add django transactional to your urls.py. It will accept urls of the form: **/APP/MODEL/add/** to add new model objects and **/APP/MODEL/add/OBJECT_ID/** to edit data in model object with id *OBJECT_ID*.
+Add django transactional to your urls.py. It will accept urls of the form: **/APP/MODEL/add/** to add new model objects and **/APP/MODEL/add/OBJECT_ID/** to edit data in model object with id *OBJECT_ID*::
 
-::
     url(r'^', include('dtrans.urls')),
 
 Templates
@@ -30,6 +30,7 @@ Forms
 Forms should be named *ModelForm* where *Model* is capitalized. If it's not present it will create a basic ModelForm:
 
 ::
+
     class ObjectForm(ModelForm):
         class Meta:
             model = MODEL
@@ -37,6 +38,7 @@ Forms should be named *ModelForm* where *Model* is capitalized. If it's not pres
 Settings
 --------
 ::
+
     DTRANS_CONF = {
         'force_urls': False,                   # Force urls nicknames
         'apps_urls': {nickname: app name},     # Dictionary with nick to app key values
@@ -49,15 +51,15 @@ Examples
 
 foo/models.py
 -------------
-
 ::
+
     class Bar(models.Model):
         name = models.CharField(max_length=10)
 
 foo/forms.py
 ------------
-
 ::
+
     class BarForm(models.ModelForm):
         class Meta:
             model = Bar
@@ -65,6 +67,7 @@ foo/forms.py
 foo_bar.html
 ------------
 ::
+
     <form action=".">
       {{ obj_form.as_p }}
       <input type="submit" value="Submit">
