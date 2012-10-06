@@ -12,12 +12,13 @@ Authors:
 from distutils.core import setup
 setup(
     name='Django-transactional',
-    version='0.4.2',
+    version='0.5',
     description='Python module for doing common transactions in Django.',
     author='Nicolas Valcarcel Scerpella',
     author_email='nvalcarcel@corpb2c.com',
     url='http://code.corpb2c.com/django-transactional',
     packages=['dtrans'],
+    package_data={'dtrans': ['templates/*.html']},
     license='BSD',
     long_description="""
 Easy package to add simple transactional ModelForm forms in your django app.

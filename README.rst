@@ -37,6 +37,8 @@ Forms should be named *ModelForm* where *Model* is capitalized. If it's not pres
 
 Settings
 --------
+Add *dtrans* to your installed apps.
+
 ::
 
     DTRANS_CONF = {
