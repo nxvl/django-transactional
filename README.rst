@@ -42,10 +42,13 @@ Add *dtrans* to your installed apps.
 ::
 
     DTRANS_CONF = {
-        'force_urls': False,                   # Force urls nicknames
         'apps_urls': {nickname: app name},     # Dictionary with nick to app key values
         'models_urls': {nickname: model name}, # Dictionary with nick to model key values
         'template_suffix': 'suffix',           # suffix to add at the end of template names
+        'include': {
+            'app_or_nick1': ['model_or_nick1', 'model_or_nick2'],
+            'app_or_nick2': ['model_or_nick3', 'model_or_nick4'],
+        }
     }
 
 Examples
@@ -70,7 +73,7 @@ foo_bar.html
 ------------
 ::
 
-    <form action=".">
-      {{ obj_form.as_p }}
-      <input type="submit" value="Submit">
+    <form id='{{ form_name }}' action="." METHOD='POST'>
+        {% csrf_token %}
+        {{ obj_form.as_p }}
     </form>
