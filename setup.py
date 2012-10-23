@@ -12,7 +12,7 @@ Authors:
 from distutils.core import setup
 setup(
     name='Django-transactional',
-    version='0.5.1.1',
+    version='0.5.1.3',
     description='Python module for doing common transactions in Django.',
     author='Nicolas Valcarcel Scerpella',
     author_email='nvalcarcel@corpb2c.com',

@@ -34,7 +34,7 @@ def add_or_modify(request, app_url, model_url, obj_id=None):
 
     """
     app_name, module_name = url_to_name(app_url, 'app')
-    model_name = url_to_name(model_url, 'model')
+    model_name = url_to_name(model_url, 'model')[0]
 
     cap_model = model_name.capitalize()
     form_name = '%sForm' % cap_model
@@ -94,14 +94,14 @@ def get_template(app_name, model_name):
     Gets template name.
 
     """
+    template_name = '%s_%s.html' % (app_name, model_name)
+
     if hasattr(settings, 'DTRANS_CONF'):
         conf = settings.DTRANS_CONF
 
         if 'template_sufix' in conf:
             template_name = '%s_%s_%s.html' % (
                 app_name, model_name, conf['template_sufix'])
-    else:
-        template_name = '%s_%s.html' % (app_name, model_name)
 
     try:
         loader.get_template(template_name)
