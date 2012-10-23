@@ -33,7 +33,7 @@ def add_or_modify(request, app_url, model_url, obj_id=None):
         obj_id: object to modify.
 
     """
-    app_name = url_to_name(app_url, 'app')
+    app_name, module_name = url_to_name(app_url, 'app')
     model_name = url_to_name(model_url, 'model')
 
     cap_model = model_name.capitalize()
@@ -42,7 +42,7 @@ def add_or_modify(request, app_url, model_url, obj_id=None):
 
     models = get_models(app_name)
     cls = get_class(models, cap_model)
-    form_obj = get_form(app_name, form_name, cls)
+    form_obj = get_form(module_name, form_name, cls)
 
     return process_request(
         request, cls, form_obj, form_name, obj_id, template_name)
@@ -94,14 +94,14 @@ def get_template(app_name, model_name):
     Gets template name.
 
     """
-    template_name = '%s_%s.html' % (app_name, model_name)
-
     if hasattr(settings, 'DTRANS_CONF'):
         conf = settings.DTRANS_CONF
 
         if 'template_sufix' in conf:
             template_name = '%s_%s_%s.html' % (
                 app_name, model_name, conf['template_sufix'])
+    else:
+        template_name = '%s_%s.html' % (app_name, model_name)
 
     try:
         loader.get_template(template_name)
@@ -117,6 +117,7 @@ def url_to_name(url, kind):
 
     """
     name = url
+    module = url
 
     if hasattr(settings, 'DTRANS_CONF'):
         conf = settings.DTRANS_CONF
@@ -124,8 +125,9 @@ def url_to_name(url, kind):
 
         if (conf_key in conf) and (url in conf[conf_key]):
             name = conf[conf_key][url].split('.')[-1]
+            module = conf[conf_key][url]
 
-    return name
+    return name, module
 
 
 def process_request(request, cls, form_obj, form_name, obj_id, template):
@@ -139,6 +141,12 @@ def process_request(request, cls, form_obj, form_name, obj_id, template):
         - obj_id: object it to modify.
 
     """
+    if obj_id:
+        obj = cls.objects.get(id=obj_id)
+        form = form_obj(instance=obj)
+    else:
+        form = form_obj()
+
     if request.method == 'POST':
         post = request.POST
         success = False
@@ -153,20 +161,14 @@ def process_request(request, cls, form_obj, form_name, obj_id, template):
         if form.is_valid():
             form.save()
             success = True
-        else:
-            res['errors'] = form.errors
 
-        res['success'] = success
+            json = simplejson.dumps(res)
+            return HttpResponse(json, mimetype='application/json')
 
-        json = simplejson.dumps(res)
-        return HttpResponse(json, mimetype='application/json')
-
-    data = {'form_name': form_name}
-    if obj_id:
-        obj = cls.objects.get(id=obj_id)
-        data['obj_form'] = form_obj(instance=obj)
-    else:
-        data['obj_form'] = form_obj()
+    data = {
+        'form_name': form_name,
+        'obj_form': form
+    }
 
     return render_to_response(
         template, data, context_instance=RequestContext(request))
