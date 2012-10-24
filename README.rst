@@ -45,6 +45,7 @@ Add *dtrans* to your installed apps.
         'apps_urls': {nickname: app name},     # Dictionary with nick to app key values
         'models_urls': {nickname: model name}, # Dictionary with nick to model key values
         'template_suffix': 'suffix',           # suffix to add at the end of template names
+        'answer': 'html',                      # POST answer type. (Options: html or json)
         'include': {
             'app_or_nick1': ['model_or_nick1', 'model_or_nick2'],
             'app_or_nick2': ['model_or_nick3', 'model_or_nick4'],
