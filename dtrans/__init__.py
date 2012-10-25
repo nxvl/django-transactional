@@ -147,7 +147,11 @@ class Request(object):
 
             if ans_type == 'json':
                 if success:
-                    res = {'success': True, 'id': obj.id}
+                    res = {
+                        'success': True,
+                        'id': obj.id,
+                        'unicode': unicode(obj)
+                    }
                 else:
                     res = {'success': False, 'errors': form.errors}
 
